@@ -67,4 +67,4 @@ const getPhotoData = function () {
   return photoData;
 };
 
-export {getPhotoData};
+export {getPhotoData}; // экспорт не нужен, если мы не импортируем функцию в main.js

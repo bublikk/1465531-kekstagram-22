@@ -3,3 +3,4 @@
 // console.log(getPhotoData());
 
 import './get-photo-data.js';
+import './pictures-list.js';
