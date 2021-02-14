@@ -8,8 +8,8 @@ const template = templateFragment.querySelector('a'); // В фрагменте �
 const fragment = document.createDocumentFragment(); // Создаем коробочку для хранения сгенерированных элементов
 
 // Задание #2
-const userModalCloseElement = fullPhoto.querySelector('.big-picture__cancel')
 const fullPhoto = document.querySelector('.big-picture'); // Получем элемент большого фото
+const userModalCloseElement = fullPhoto.querySelector('.big-picture__cancel');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
