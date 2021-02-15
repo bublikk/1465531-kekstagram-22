@@ -15,7 +15,7 @@ function getBigPicture(pictureItem) { // Функция ждет созданн�
   body.classList.add('modal-open');
 
   // Заполняем параметры элементов большого фото - данными из наших сгенерированных данных (get-photo-data)
-  bigPicture.querySelector('img').src = pictureItem.url;
+  bigPicture.querySelector('.big-picture__img').querySelector('img').src = pictureItem.url;
   bigPicture.querySelector('.likes-count').textContent = pictureItem.likes;
   bigPicture.querySelector('.comments-count').textContent = pictureItem.comments.length;
   bigPicture.querySelector('.social__caption').textContent = pictureItem.description;
