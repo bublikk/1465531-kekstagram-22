@@ -58,7 +58,7 @@ const getPhotoData = function () {
     const post = {
       id: i,
       url: `photos/${i}.jpg`,
-      description: `Подпись к фото ${i}`,
+      description: `Тестируем камеру ${i}`,
       comments: getCommentData(),
       likes: getRandomIntInclusive(15, 200),
     };

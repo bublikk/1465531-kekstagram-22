@@ -4,3 +4,4 @@
 
 import './get-photo-data.js';
 import './pictures-list.js';
+import './get-big-picture.js';
