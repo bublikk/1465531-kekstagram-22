@@ -16,4 +16,14 @@ const getRandomIntInclusive = function (min, max) {
     : -1;
 };
 
-export {checkStringLength, getRandomIntInclusive};
+// Реализация закрытия полноразмерного фото нажатием на кнопку
+const modalCloseElement = function (hideParentElement, hideChildElement) {
+  const body = document.querySelector('body');
+
+  hideParentElement.addEventListener('click', function () {
+    hideChildElement.classList.add('hidden');
+    body.classList.remove('modal-open');
+  })
+}
+
+export {checkStringLength, getRandomIntInclusive, modalCloseElement};
