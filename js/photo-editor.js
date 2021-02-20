@@ -13,6 +13,15 @@ let scaleControlValue = document.querySelector('.scale__control--value');
 let initialScale = 100;
 const SCALE_STEP = 25;
 
+const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
+const previewClassList = document.querySelector('.img-upload__preview img').classList;
+const effectsRadioButtons  = document.querySelectorAll('.effects__radio');
+const effectLevelSlider = document.querySelector('.effect-level__slider');
+const effectLevelValue = document.querySelector('.effect-level__value');
+let initialFilterValue = 100;
+const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
+
+
 // Открытие формы редактирования изображения
 uploadFile.addEventListener('change', function () {
   scaleControlValue.value = `${initialScale}%`;
@@ -49,21 +58,65 @@ scaleControlBigger.addEventListener('click', function () {
   }
 });
 
-////////////////////////////////
+// Слайдер
 
-const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
-const previewClassList = document.querySelector('.img-upload__preview img').classList;
-const effectsRadioButtons  = document.querySelectorAll('.effects__radio');
-const effectLevelSlider = document.querySelector('.effect-level__slider');
-const effectLevelValue = document.querySelector('.effect-level__value');
-let initialFilterValue = 100;
+// Скрывает слайдер у оригинала
+imgUploadEffectLevel.classList.add('hidden');
 
 for (let effectRadioButton of effectsRadioButtons) {
-  effectRadioButton.addEventListener('change', (evt) => {
+  effectRadioButton.addEventListener('change', function(evt) {
+    if (evt.target.value === 'none') {
+      imgUploadEffectLevel.classList.add('hidden');
+    } else {
+      imgUploadEffectLevel.classList.remove('hidden');
+    }
+
+    // Сначала убираем все фильтры с большого фото, а потом накладываем выбранный (на который кликнули)
     while (previewClassList.length > 0) {
       previewClassList.remove(previewClassList.item(0));
     }
     previewClassList.add(`effects__preview--${evt.target.value}`);
+    effectLevelValue.value = initialFilterValue;
+
+    let currentEffect = previewClassList.item(0);
+    if (currentEffect === 'effects__preview--chrome' || currentEffect === 'effects__preview--sepia') {
+      effectLevelSlider.noUiSlider.updateOptions({
+        range: {
+          min: 0,
+          max: 1,
+        },
+        step: 0.1,
+        start: 1,
+      });
+    } else if (currentEffect === 'effects__preview--marvin') {
+      effectLevelSlider.noUiSlider.updateOptions({
+        range: {
+          min: 0,
+          max: 100,
+        },
+        step: 1,
+        start: 100,
+      });
+    } else if (currentEffect === 'effects__preview--phobos') {
+      effectLevelSlider.noUiSlider.updateOptions({
+        range: {
+          min: 0,
+          max: 3,
+        },
+        step: 0.1,
+        start: 3,
+      });
+    } else if (currentEffect === 'effects__preview--heat') {
+      effectLevelSlider.noUiSlider.updateOptions({
+        range: {
+          min: 1,
+          max: 3,
+        },
+        step: 0.1,
+        start: 3,
+      });
+    }
+
   });
 }
 
@@ -73,9 +126,9 @@ effectLevelValue.value = initialFilterValue;
 noUiSlider.create(effectLevelSlider, {
   range: {
     min: 0,
-    max: 3,
+    max: 1,
   },
-  start: 3,
+  start: 1,
   step: 0.1,
   connect: 'lower',
   format: {
@@ -94,56 +147,31 @@ noUiSlider.create(effectLevelSlider, {
 effectLevelSlider.noUiSlider.on('update', function (values, handle) {
   effectLevelValue.value = values[handle];
   let currentEffect = previewClassList.item(0);
-  if (currentEffect === 'effects__preview--phobos') {
-    imgUploadPreviewImg.style.filter = `blur(${effectLevelValue.value}px)`;
-  } else if (currentEffect === 'effects__preview--chrome') {
+
+  if (currentEffect === 'effects__preview--chrome') {
     imgUploadPreviewImg.style.filter = `grayscale(${effectLevelValue.value})`;
   } else if (currentEffect === 'effects__preview--sepia') {
     imgUploadPreviewImg.style.filter = `sepia(${effectLevelValue.value})`;
   } else if (currentEffect === 'effects__preview--marvin') {
     imgUploadPreviewImg.style.filter = `invert(${effectLevelValue.value}%)`;
+  } else if (currentEffect === 'effects__preview--phobos') {
+    imgUploadPreviewImg.style.filter = `blur(${effectLevelValue.value}px)`;
   } else if (currentEffect === 'effects__preview--heat') {
     imgUploadPreviewImg.style.filter = `brightness(${effectLevelValue.value})`;
-  } else {
-    imgUploadPreviewImg.style.filter = '';
   }
+
+  /*
+  if (currentEffect === 'effects__preview--chrome') {
+    imgUploadPreviewImg.style.filter = `grayscale(${effectLevelValue.value})`;
+  } else if (currentEffect === 'effects__preview--sepia') {
+    imgUploadPreviewImg.style.filter = `sepia(${effectLevelValue.value})`;
+  } else if (currentEffect === 'effects__preview--marvin') {
+    imgUploadPreviewImg.style.filter = `invert(${effectLevelValue.value * 100}%)`;
+  } else if (currentEffect === 'effects__preview--phobos') {
+    imgUploadPreviewImg.style.filter = `blur(${effectLevelValue.value * 3}px)`;
+  } else if (currentEffect === 'effects__preview--heat') {
+    imgUploadPreviewImg.style.filter = `brightness(${effectLevelValue.value * 2 + 1})`;
+  }
+  */
+
 });
-
-
-/*
-const effectNone = document.querySelector('#effect-none');
-const effectChrome = document.querySelector('#effect-chrome');
-const effectSepia = document.querySelector('#effect-sepia');
-const effectMarvin = document.querySelector('#effect-marvin');
-const effectPhobos = document.querySelector('#effect-phobos');
-const effectHeat = document.querySelector('#effect-heat');
-*/
-
-/*
-for (let effectRadioButton of effectsRadioButtons) {
-  effectRadioButton.addEventListener('change', (evt) => {
-    console.log(evt.target.checked);
-    if (evt.target.checked) {
-      // Цена и шаг в десять раз меньше
-      effectLevelSlider.noUiSlider.updateOptions({
-        range: {
-          min: 1,
-          max: 10,
-        },
-        start: 100,
-        step: 0.1,
-      });
-    } else {
-      // Цена и шаг по умолчанию
-      effectLevelSlider.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 100,
-        },
-        step: 1,
-      });
-      effectLevelSlider.noUiSlider.set(100);
-    }
-  });
-}
-*/
