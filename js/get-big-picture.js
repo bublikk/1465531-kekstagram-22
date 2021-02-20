@@ -1,9 +1,7 @@
-import {modalCloseElement} from './util.js';
-
 // Задание #2
 const COMMENT_IMG_SIZE = 35;
 const bigPicture = document.querySelector('.big-picture'); // Получем элемент большого фото
-const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
+const userModalCloseElement = bigPicture.querySelector('.big-picture__cancel');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
@@ -58,4 +56,14 @@ function getBigPicture(pictureItem) { // Функция ждет созданн�
 export {getBigPicture};
 
 // Реализация закрытия полноразмерного фото
-modalCloseElement(bigPictureCancel, bigPicture);
+userModalCloseElement.addEventListener('click', function () {
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
+});
+
+document.addEventListener('keydown', function(evt) {
+  if (evt.key === 'Escape') {
+    bigPicture.classList.add('hidden');
+    body.classList.remove('modal-open');
+  }
+});

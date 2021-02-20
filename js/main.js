@@ -6,3 +6,4 @@ import './get-photo-data.js';
 import './pictures-list.js';
 import './get-big-picture.js';
 import './photo-editor.js';
+import './slider.js';
