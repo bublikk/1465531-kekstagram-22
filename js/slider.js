@@ -118,7 +118,6 @@ noUiSlider.create(effectLevelSlider, {
 
 effectLevelSlider.noUiSlider.on('update', function (values, handle) {
   effectLevelValue.value = values[handle];
-  console.log(effectLevelValue.value);
 
   if (currentEffect !== 'none') {
     imgUploadPreviewImg.style.filter = `${effectsMap[currentEffect].filter}(${effectLevelValue.value}${effectsMap[currentEffect].unit})`;
