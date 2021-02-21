@@ -9,19 +9,21 @@ const body = document.querySelector('body');
 function getBigPicture(pictureItem) { // Функция ждет созданным нами (cloneNode) новый элемент И данные фото которые мы сгенерировали в get-photo-data
   // Что должно происходить при наступлении события "клик"
 
+  document.addEventListener('keydown', bigPictureCloseLiestner);
+
   bigPicture.classList.remove('hidden'); // Показываем большое фото
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
   body.classList.add('modal-open');
 
   // Заполняем параметры элементов большого фото - данными из наших сгенерированных данных (get-photo-data)
-  bigPicture.querySelector('.big-picture__img').querySelector('img').src = pictureItem.url;
+  bigPicture.querySelector('.big-picture__img img').src = pictureItem.url;
   bigPicture.querySelector('.likes-count').textContent = pictureItem.likes;
   bigPicture.querySelector('.comments-count').textContent = pictureItem.comments.length;
   bigPicture.querySelector('.social__caption').textContent = pictureItem.description;
 
   // Получем элемент UL который хранит комментарии большого фото
-  let socialComments = bigPicture.querySelector('.social__comments');
+  const socialComments = bigPicture.querySelector('.social__comments');
 
   // Удаляем текущие (добавленные ранее) комментарии
   while (socialComments.firstChild) {
@@ -30,7 +32,7 @@ function getBigPicture(pictureItem) { // Функция ждет созданн�
 
   // Обходим массив комментариев из get-photo-data и на их основе создаем LI в котором IMG и P, и добавляем их в комментарии большого фото
   for (let j = 0; j < pictureItem.comments.length; j++) {
-    let currentComment = pictureItem.comments[j];
+    const currentComment = pictureItem.comments[j];
 
     const commentLi = document.createElement('li');
     commentLi.classList.add('social__comment');
@@ -59,4 +61,13 @@ export {getBigPicture};
 userModalCloseElement.addEventListener('click', function () {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
+  document.removeEventListener('keydown', bigPictureCloseLiestner);
 });
+
+const bigPictureCloseLiestner = function(evt) {
+  if (evt.key === 'Escape') {
+    bigPicture.classList.add('hidden');
+    body.classList.remove('modal-open');
+    document.removeEventListener('keydown', bigPictureCloseLiestner);
+  }
+};
