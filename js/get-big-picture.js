@@ -9,6 +9,8 @@ const body = document.querySelector('body');
 function getBigPicture(pictureItem) { // Функция ждет созданным нами (cloneNode) новый элемент И данные фото которые мы сгенерировали в get-photo-data
   // Что должно происходить при наступлении события "клик"
 
+  document.addEventListener('keydown', bigPictureCloseLiestner);
+
   bigPicture.classList.remove('hidden'); // Показываем большое фото
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
@@ -59,11 +61,13 @@ export {getBigPicture};
 userModalCloseElement.addEventListener('click', function () {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
+  document.removeEventListener('keydown', bigPictureCloseLiestner);
 });
 
-document.addEventListener('keydown', function(evt) {
+const bigPictureCloseLiestner = function(evt) {
   if (evt.key === 'Escape') {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
+    document.removeEventListener('keydown', bigPictureCloseLiestner);
   }
-});
+};

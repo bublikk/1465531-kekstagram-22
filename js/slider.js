@@ -2,11 +2,10 @@
 import '../nouislider/nouislider.js';
 
 const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
-const previewClassList = document.querySelector('.img-upload__preview img').classList;
 const effectsMapRadioButtons  = document.querySelectorAll('.effects__radio');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
-let initialFilterValue = 100;
+const initialFilterValue = 100;
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
 let currentEffect = 'none';
 
@@ -71,10 +70,10 @@ for (let effectRadioButton of effectsMapRadioButtons) {
     currentEffect = evt.target.value;
 
     // Сначала убираем все фильтры с большого фото, а потом накладываем выбранный (на который кликнули)
-    while (previewClassList.length > 0) {
-      previewClassList.remove(previewClassList.item(0));
+    while (imgUploadPreviewImg.classList.length > 0) {
+      imgUploadPreviewImg.classList.remove(imgUploadPreviewImg.classList.item(0));
     }
-    previewClassList.add(`effectsMap__preview--${currentEffect}`);
+    imgUploadPreviewImg.classList.add(`effectsMap__preview--${currentEffect}`);
 
     effectLevelValue.value = initialFilterValue;
     if (currentEffect === 'none') {
@@ -95,7 +94,6 @@ for (let effectRadioButton of effectsMapRadioButtons) {
 }
 
 // Слайдер effectLevelSlider
-effectLevelValue.value = initialFilterValue;
 
 noUiSlider.create(effectLevelSlider, {
   range: {
@@ -120,6 +118,7 @@ noUiSlider.create(effectLevelSlider, {
 
 effectLevelSlider.noUiSlider.on('update', function (values, handle) {
   effectLevelValue.value = values[handle];
+  console.log(effectLevelValue.value);
 
   if (currentEffect !== 'none') {
     imgUploadPreviewImg.style.filter = `${effectsMap[currentEffect].filter}(${effectLevelValue.value}${effectsMap[currentEffect].unit})`;
