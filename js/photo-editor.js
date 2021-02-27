@@ -16,6 +16,9 @@ const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
 
 const keydownLiestner = function(evt) {
   if (evt.key === 'Escape') {
+    if (document.activeElement.className === 'text__hashtags' || document.activeElement.className === 'text__description') {
+      return;
+    }
     modalCloseElement();
   }
 }
