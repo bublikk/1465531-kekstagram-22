@@ -8,7 +8,7 @@ const imgUploadPreview = document.querySelector('.img-upload__preview');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
-let initialScale = 100;
+let initialScale;
 const SCALE_STEP = 25;
 
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
@@ -16,6 +16,9 @@ const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
 
 const keydownLiestner = function(evt) {
   if (evt.key === 'Escape') {
+    if (document.activeElement.className === 'text__hashtags' || document.activeElement.className === 'text__description') {
+      return;
+    }
     modalCloseElement();
   }
 }
@@ -23,13 +26,15 @@ const keydownLiestner = function(evt) {
 // Открытие формы редактирования изображения
 uploadFile.addEventListener('change', function () {
 
+  initialScale = 100;
+  imgUploadPreview.style.transform = '';
+
   scaleControlValue.value = `${initialScale}%`;
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
 
   // Реализация закрытия полноразмерного фото нажатием клавиши Esc
   document.addEventListener('keydown', keydownLiestner);
-
 });
 
 // Реализация закрытия полноразмерного фото
@@ -42,7 +47,6 @@ const modalCloseElement = function () {
   document.querySelector('#effect-none').checked = true;
   imgUploadEffectLevel.classList.add('hidden');
   imgUploadPreviewImg.style.filter = 'none';
-
 };
 
 // Реализация закрытия полноразмерного фото нажатием на кнопку

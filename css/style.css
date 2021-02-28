@@ -1416,3 +1416,12 @@ main {
 .hidden {
   display: none;
 }
+
+
+/**
+ * Валидация форм
+ */
+
+.text__hashtags:invalid {
+  outline: 2px solid #e90d0d;
+}
