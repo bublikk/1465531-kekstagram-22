@@ -28,7 +28,7 @@ hashtagInput.addEventListener('input', function () {
         hashtagInput.setCustomValidity ('Имя не должно превышать 20-ти символов');
       } else if (hashtag[0] !== '#') {
         hashtagInput.setCustomValidity ('Хеш-тег начинается с "#"');
-      } else if (hashtag.substring(1).match('^[А-Яа-яA-Za-z0-9]+$') === null){
+      } else if (hashtag.substring(1).match('^[а-яa-z0-9]+$') === null){
         hashtagInput.setCustomValidity ('Не может содержать пробелы, спецсимволы');
       } else if (hashtags.filter(function(x){return x === hashtag}).length > 1) {
         hashtagInput.setCustomValidity ('Нельзя использовать одинаковые хэш-теги');

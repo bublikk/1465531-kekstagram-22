@@ -1,8 +1,11 @@
+import {sendData} from './backend-api.js';
+
 const uploadFile = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
 const uploadCancel = document.querySelector('#upload-cancel');
 const imgUploadInput = document.querySelector('.img-upload__input');
+const imgUploadForm = document.querySelector('.img-upload__form');
 
 const imgUploadPreview = document.querySelector('.img-upload__preview');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
@@ -13,6 +16,20 @@ const SCALE_STEP = 25;
 
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
 const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
+
+const hashtagInput = document.querySelector('.text__hashtags');
+const textDescription = document.querySelector('.text__description');
+
+// Элементы для сообщения об успешной отправки данных на сервер
+const templateSuccess = document.querySelector('#success').content;
+const sectionSuccess = templateSuccess.querySelector('.success');
+const fragmentSuccess = document.createDocumentFragment();
+const main = document.querySelector('main');
+
+// Элементы для сообщения об ошибки отправки данных на сервер
+const templateError = document.querySelector('#error').content;
+const sectionError = templateError.querySelector('.error');
+const fragmentError = document.createDocumentFragment();
 
 const keydownLiestner = function(evt) {
   if (evt.key === 'Escape') {
@@ -41,7 +58,9 @@ uploadFile.addEventListener('change', function () {
 const modalCloseElement = function () {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  imgUploadInput.value = ''; // это адрес загружаемого фото (пока не используется, но по ТЗ есть)
+  imgUploadInput.value = ''; // адрес загружаемого фото
+  hashtagInput.value = '';
+  textDescription.value = '';
   document.removeEventListener('keydown', keydownLiestner);
 
   document.querySelector('#effect-none').checked = true;
@@ -71,3 +90,31 @@ scaleControlBigger.addEventListener('click', function () {
     imgUploadPreview.style.transform = `scale(${initialScale/100})`;
   }
 });
+
+// Отменяет событие формы по умолчанию
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  sendData(new FormData(evt.target));
+});
+
+// Показывает окно успешной отправки
+let messageSuccess = function () {
+  const element = sectionSuccess.cloneNode(true);
+  fragmentSuccess.appendChild(element); // Добавляем элементы в наш фрагмент
+  element.addEventListener('click', function () {
+    element.classList.add('hidden');
+  });
+  main.appendChild(fragmentSuccess);
+};
+
+// Показывает окно об ошибки отправки
+let messageError = function () {
+  const element = sectionError.cloneNode(true);
+  fragmentError.appendChild(element); // Добавляем элементы в наш фрагмент
+  element.addEventListener('click', function () {
+    element.classList.add('hidden');
+  });
+  main.appendChild(fragmentError);
+};
+
+export {messageSuccess, messageError};

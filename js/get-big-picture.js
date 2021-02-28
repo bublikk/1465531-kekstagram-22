@@ -55,8 +55,6 @@ function getBigPicture(pictureItem) { // Функция ждет созданн�
   }
 }
 
-export {getBigPicture};
-
 // Реализация закрытия полноразмерного фото
 userModalCloseElement.addEventListener('click', function () {
   bigPicture.classList.add('hidden');
@@ -71,3 +69,5 @@ const bigPictureCloseLiestner = function(evt) {
     document.removeEventListener('keydown', bigPictureCloseLiestner);
   }
 };
+
+export {getBigPicture};
