@@ -47,7 +47,7 @@ const sendData = (formData) => {
     'https://22.javascript.pages.academy/kekstagram',
     {
       method: 'POST',
-      formData,
+      body: formData,
     },
   )
     .then((response) => {
@@ -55,12 +55,10 @@ const sendData = (formData) => {
         messageSuccess();
       } else {
         messageError();
-        //messageSuccess();
       }
     })
     .catch(() => {
       messageError();
-      //messageSuccess();
     });
 };
 

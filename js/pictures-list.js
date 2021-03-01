@@ -1,7 +1,4 @@
-// import {getPhotoData} from './get-photo-data.js'; // Импорт функции getPhotoData
 import {getBigPicture} from './get-big-picture.js';
-
-// const picturesList = getPhotoData(); // Данная переменная хранит результат вызванной функции (массив)
 
 const pictures = document.querySelector('.pictures');
 const templateFragment = document.querySelector('#picture').content; // Находим фрагмент с содержимым темплейта

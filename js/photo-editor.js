@@ -97,24 +97,61 @@ imgUploadForm.addEventListener('submit', (evt) => {
   sendData(new FormData(evt.target));
 });
 
+// Удаляет элемент с документа (закрывает окошко сообщений)
+const removeElement = function () {
+  let deletedElement = document.querySelector('.success');
+  if (deletedElement === null){
+    deletedElement = document.querySelector('.error');
+  }
+  deletedElement.remove();
+  document.removeEventListener('keydown', keydownLiestnerMessage);
+};
+
+const keydownLiestnerMessage = function (evt) {
+  if (evt.key === 'Escape') {
+    removeElement();
+  }
+}
+
 // Показывает окно успешной отправки
 let messageSuccess = function () {
+  modalCloseElement(); // Закрываем форму
+
   const element = sectionSuccess.cloneNode(true);
   fragmentSuccess.appendChild(element); // Добавляем элементы в наш фрагмент
-  element.addEventListener('click', function () {
-    element.classList.add('hidden');
-  });
   main.appendChild(fragmentSuccess);
+
+  element.addEventListener('click', function (e) {
+    if (e.target.closest('.success__inner') === null) {
+      removeElement();
+    }
+  });
+
+  document.querySelector('.success__button').addEventListener('click', function () {
+    removeElement();
+  });
+
+  document.addEventListener('keydown', keydownLiestnerMessage);
 };
 
 // Показывает окно об ошибки отправки
 let messageError = function () {
+  modalCloseElement(); // Закрываем форму
+
   const element = sectionError.cloneNode(true);
   fragmentError.appendChild(element); // Добавляем элементы в наш фрагмент
-  element.addEventListener('click', function () {
-    element.classList.add('hidden');
-  });
   main.appendChild(fragmentError);
+
+  element.addEventListener('click', function (e) {
+    if (e.target.closest('.error__inner') === null) {
+      removeElement();
+    }
+  });
+
+  document.querySelector('.error__button').addEventListener('click', function () {
+    removeElement();
+  });
+  document.addEventListener('keydown', keydownLiestnerMessage);
 };
 
 export {messageSuccess, messageError};
