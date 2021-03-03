@@ -20,18 +20,7 @@ const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
 const hashtagInput = document.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
 
-// Элементы для сообщения об успешной отправки данных на сервер
-const templateSuccess = document.querySelector('#success').content;
-const sectionSuccess = templateSuccess.querySelector('.success');
-const fragmentSuccess = document.createDocumentFragment();
-const main = document.querySelector('main');
-
-// Элементы для сообщения об ошибки отправки данных на сервер
-const templateError = document.querySelector('#error').content;
-const sectionError = templateError.querySelector('.error');
-const fragmentError = document.createDocumentFragment();
-
-const keydownLiestner = function(evt) {
+const keydownListener = function(evt) {
   if (evt.key === 'Escape') {
     if (document.activeElement.className === 'text__hashtags' || document.activeElement.className === 'text__description') {
       return;
@@ -51,7 +40,7 @@ uploadFile.addEventListener('change', function () {
   body.classList.add('modal-open');
 
   // Реализация закрытия полноразмерного фото нажатием клавиши Esc
-  document.addEventListener('keydown', keydownLiestner);
+  document.addEventListener('keydown', keydownListener);
 });
 
 // Реализация закрытия полноразмерного фото
@@ -61,7 +50,7 @@ const modalCloseElement = function () {
   imgUploadInput.value = ''; // адрес загружаемого фото
   hashtagInput.value = '';
   textDescription.value = '';
-  document.removeEventListener('keydown', keydownLiestner);
+  document.removeEventListener('keydown', keydownListener);
 
   document.querySelector('#effect-none').checked = true;
   imgUploadEffectLevel.classList.add('hidden');
@@ -97,61 +86,4 @@ imgUploadForm.addEventListener('submit', (evt) => {
   sendData(new FormData(evt.target));
 });
 
-// Удаляет элемент с документа (закрывает окошко сообщений)
-const removeElement = function () {
-  let deletedElement = document.querySelector('.success');
-  if (deletedElement === null){
-    deletedElement = document.querySelector('.error');
-  }
-  deletedElement.remove();
-  document.removeEventListener('keydown', keydownLiestnerMessage);
-};
-
-const keydownLiestnerMessage = function (evt) {
-  if (evt.key === 'Escape') {
-    removeElement();
-  }
-}
-
-// Показывает окно успешной отправки
-let messageSuccess = function () {
-  modalCloseElement(); // Закрываем форму
-
-  const element = sectionSuccess.cloneNode(true);
-  fragmentSuccess.appendChild(element); // Добавляем элементы в наш фрагмент
-  main.appendChild(fragmentSuccess);
-
-  element.addEventListener('click', function (e) {
-    if (e.target.closest('.success__inner') === null) {
-      removeElement();
-    }
-  });
-
-  document.querySelector('.success__button').addEventListener('click', function () {
-    removeElement();
-  });
-
-  document.addEventListener('keydown', keydownLiestnerMessage);
-};
-
-// Показывает окно об ошибки отправки
-let messageError = function () {
-  modalCloseElement(); // Закрываем форму
-
-  const element = sectionError.cloneNode(true);
-  fragmentError.appendChild(element); // Добавляем элементы в наш фрагмент
-  main.appendChild(fragmentError);
-
-  element.addEventListener('click', function (e) {
-    if (e.target.closest('.error__inner') === null) {
-      removeElement();
-    }
-  });
-
-  document.querySelector('.error__button').addEventListener('click', function () {
-    removeElement();
-  });
-  document.addEventListener('keydown', keydownLiestnerMessage);
-};
-
-export {messageSuccess, messageError};
+export {modalCloseElement};
