@@ -8,6 +8,12 @@ const fragment = document.createDocumentFragment(); // Создаем короб
 // Создаем функцию, которая будет отрисовывать данные с сервера
 const renderSmallPhotos = function (picturesList) {
 
+  // Перед отрисовкой удаляем детей
+  const images = document.querySelectorAll('.pictures a');
+  for (let i = 0; i < images.length; i++) {
+    images[i].remove();
+  }
+
   // Задание #1
   picturesList.forEach(function (pictureItem) { // Обходим массив pictureList (итератор pictureItem)
     const element = template.cloneNode(true); // Клонируем шаблон (создаем элемент)

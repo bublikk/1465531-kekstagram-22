@@ -9,8 +9,6 @@ const initialFilterValue = 100;
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
 let currentEffect = 'none';
 
-effectLevelValue.type = '';
-
 const effectsMap = {
   chrome: {
     range: {
