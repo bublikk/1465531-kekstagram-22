@@ -1,79 +1,53 @@
-/* global _:readonly */
 import {getRandomIntInclusive} from './util.js';
 import {renderSmallPhotos} from './pictures-list.js';
 
-const imgFilters = document.querySelector('.img-filters');
 const formFilters = document.querySelector('.img-filters__form');
 
-const RERENDER_DELAY = 500;
-
-const renderFilter = function (picturesList) {
-  // Показываем фильтры
-  imgFilters.classList.remove('img-filters--inactive');
-
-  // Делаем копию массива с сервера
-  const defaultArray = picturesList.slice();
-
-  // По умолчанию отрисовывем стандартный массив
-  renderSmallPhotos(defaultArray);
-
-  // Обрабатываем клик на фильтр
-  formFilters.addEventListener('click', function (evt) {
-
-    // Переключение фильтров
-    for (let i = 0; i < formFilters.children.length; i++) {
-      formFilters.children[i].classList.remove('img-filters__button--active');
-    }
-    evt.target.classList.add('img-filters__button--active');
-
-    // Обработка фильтров
-    if (evt.target.id === 'filter-discussed'){
-      let sortedArray = defaultArray.slice();
-      // Отрисовывем Обсуждаемые
-      sortedArray.sort(function (a, b) {
-        if (a.comments.length > b.comments.length) {
-          return -1;
-        }
-        if (a.comments.length < b.comments.length) {
-          return 1;
-        }
-        // a должно быть равным b
-        return 0;
-      });
-      clickCb(_.debounce(
-        () => renderSmallPhotos(sortedArray),
-        RERENDER_DELAY,
-      ));
-    }
-    else if (evt.target.id === 'filter-random'){
-      // Генерируем случайный массив
-      let randomArray = [];
-      for (let i = 0; i < 10; i++) {
-        let element = picturesList[getRandomIntInclusive(0, picturesList.length -1)];
-        while (randomArray.indexOf(element) !== -1) { // пока переменная element не найдена в массиве randomArray цикл генерирует новое число
-          element = picturesList[getRandomIntInclusive(0, picturesList.length -1)];
-        }
-        randomArray.push(element);
-      }
-      // Отрисовывем случайный массив
-      clickCb(_.debounce(
-        () => renderSmallPhotos(randomArray),
-        RERENDER_DELAY,
-      ));
-    } else {
-      // Отрисовывем стандартный массив
-      clickCb(_.debounce(
-        () => renderSmallPhotos(defaultArray),
-        RERENDER_DELAY,
-      ));
-    }
-
-  })
-
+// Отрисовывем Обсуждаемые
+const sortedByCommentsCount = (array) => {
+  let sortedArray = array.slice();
+  return sortedArray.sort(function (a, b) {
+    return b.comments.length - a.comments.length;
+  });
 }
 
-const clickCb = (cb) => {
-  cb();
+// Генерируем 10 случайных, не повторяющихся фотографий
+const getRandomElements = (array, count) => {
+  let randomArray = [];
+  for (let i = 0; i < count; i++) {
+    let element = array[getRandomIntInclusive(0, array.length -1)];
+    while (randomArray.indexOf(element) !== -1) { // пока переменная element не найдена в массиве randomArray цикл генерирует новое число
+      element = array[getRandomIntInclusive(0, array.length -1)];
+    }
+    randomArray.push(element);
+  }
+  return randomArray;
+}
+
+const filter = function (evt, defaultArray) {
+  // Переключение фильтров
+  for (let i = 0; i < formFilters.children.length; i++) {
+    formFilters.children[i].classList.remove('img-filters__button--active');
+  }
+  evt.target.classList.add('img-filters__button--active');
+
+  // Обработка фильтров
+  if (evt.target.id === 'filter-discussed'){
+    // Отрисовываем обсуждаемый массив
+    renderSmallPhotos(sortedByCommentsCount(defaultArray));
+  } else if (evt.target.id === 'filter-random'){
+    // Отрисовываем случайный массив
+    renderSmallPhotos(getRandomElements(defaultArray, 10));
+  } else {
+    // Отрисовывем стандартный массив
+    renderSmallPhotos(defaultArray);
+  }
+}
+
+const setFilter = (cb) => {
+  formFilters.addEventListener('click', (evt) => {
+    cb(evt);
+  });
 };
 
-export {renderFilter};
+export {filter, setFilter};
