@@ -1,6 +1,8 @@
 import {sendData} from './backend-api.js';
 
-const uploadFile = document.querySelector('#upload-file');
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
+const uploadFile = document.querySelector('.img-upload__start input[type=file]');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
 const uploadCancel = document.querySelector('#upload-cancel');
@@ -32,6 +34,23 @@ const keydownListener = function(evt) {
 // Открытие формы редактирования изображения
 uploadFile.addEventListener('change', function () {
 
+  const file = uploadFile.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => {
+    return fileName.endsWith(it);
+  });
+
+  if (matches) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      imgUploadPreviewImg.src = reader.result;
+    });
+    reader.readAsDataURL(file);
+  } else {
+    return;
+  }
+
   initialScale = 100;
   imgUploadPreview.style.transform = '';
 
@@ -55,6 +74,7 @@ const modalCloseElement = function () {
   document.querySelector('#effect-none').checked = true;
   imgUploadEffectLevel.classList.add('hidden');
   imgUploadPreviewImg.style.filter = 'none';
+  imgUploadPreviewImg.src = '';
 };
 
 // Реализация закрытия полноразмерного фото нажатием на кнопку
