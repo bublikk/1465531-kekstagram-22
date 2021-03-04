@@ -1,3 +1,5 @@
+import {cutComments} from './comment.js';
+
 // Задание #2
 const COMMENT_IMG_SIZE = 35;
 const bigPicture = document.querySelector('.big-picture'); // Получем элемент большого фото
@@ -52,6 +54,8 @@ function getBigPicture(pictureItem) { // Функция ждет созданн�
     commentLi.appendChild(commentText);
 
     socialComments.appendChild(commentLi);
+
+    cutComments();
   }
 }
 
