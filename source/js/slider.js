@@ -1,5 +1,5 @@
-/* global noUiSlider:readonly */
-import '../nouislider/nouislider.js';
+import noUiSlider from 'nouislider';
+import 'nouislider/distribute/nouislider.css';
 
 const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
 const effectsMapRadioButtons  = document.querySelectorAll('.effects__radio');
