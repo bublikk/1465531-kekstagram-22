@@ -3,9 +3,12 @@ const COMMENT_LIMIT = 5;
 
 const cutComments = function () {
 
-  downloadButton.classList.remove('hidden');
-
   const comments = document.querySelectorAll('.social__comment');
+
+  if (comments.length > COMMENT_LIMIT) {
+    downloadButton.classList.remove('hidden');
+  }
+
   for (let i = 0; i < comments.length; i++) {
     const comment = comments[i];
     if (i >= COMMENT_LIMIT) {
@@ -21,7 +24,7 @@ downloadButton.addEventListener('click', function () {
   let hiddenComments = [];
 
   comments.forEach(element => {
-    if (element.classList.contains('hidden') === true) {
+    if (element.classList.contains('hidden')) {
       hiddenComments.push(element);
     }
   });
@@ -33,7 +36,7 @@ downloadButton.addEventListener('click', function () {
     }
   }
 
-  if (hiddenComments.length < COMMENT_LIMIT) {
+  if (hiddenComments.length <= COMMENT_LIMIT) {
     downloadButton.classList.add('hidden');
   }
 
