@@ -5,11 +5,11 @@ const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
 const effectsMapRadioButtons  = document.querySelectorAll('.effects__radio');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
-const initialFilterValue = 100;
+const INITIAL_FILTER_VALUE = 100;
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
 let currentEffect = 'none';
 
-const effectsMap = {
+const EffectsMap = {
   chrome: {
     range: {
       min: 0,
@@ -66,7 +66,7 @@ const effectsMap = {
 imgUploadEffectLevel.classList.add('hidden');
 
 for (let effectRadioButton of effectsMapRadioButtons) {
-  effectRadioButton.addEventListener('change', function(evt) {
+  effectRadioButton.addEventListener('change', (evt) => {
     currentEffect = evt.target.value;
 
     // Сначала убираем все фильтры с большого фото, а потом накладываем выбранный (на который кликнули)
@@ -75,7 +75,7 @@ for (let effectRadioButton of effectsMapRadioButtons) {
     }
     imgUploadPreviewImg.classList.add(`effectsMap__preview--${currentEffect}`);
 
-    effectLevelValue.value = initialFilterValue;
+    effectLevelValue.value = INITIAL_FILTER_VALUE;
     if (currentEffect === 'none') {
       imgUploadEffectLevel.classList.add('hidden');
       imgUploadPreviewImg.style.filter = 'none';
@@ -83,18 +83,17 @@ for (let effectRadioButton of effectsMapRadioButtons) {
       imgUploadEffectLevel.classList.remove('hidden');
       effectLevelSlider.noUiSlider.updateOptions({
         range: {
-          min: effectsMap[currentEffect].range.min,
-          max: effectsMap[currentEffect].range.max,
+          min: EffectsMap[currentEffect].range.min,
+          max: EffectsMap[currentEffect].range.max,
         },
-        step: effectsMap[currentEffect].step,
-        start: effectsMap[currentEffect].start,
+        step: EffectsMap[currentEffect].step,
+        start: EffectsMap[currentEffect].start,
       });
     }
   });
 }
 
-// Слайдер effectLevelSlider
-
+// Слайдер
 noUiSlider.create(effectLevelSlider, {
   range: {
     min: 0,
@@ -104,22 +103,22 @@ noUiSlider.create(effectLevelSlider, {
   step: 0.1,
   connect: 'lower',
   format: {
-    to: function (value) {
+    to: (value) => {
       if (Number.isInteger(value)) {
         return value.toFixed(0);
       }
       return value.toFixed(1);
     },
-    from: function (value) {
+    from: (value) => {
       return parseFloat(value);
     },
   },
 });
 
-effectLevelSlider.noUiSlider.on('update', function (values, handle) {
+effectLevelSlider.noUiSlider.on('update', (values, handle) => {
   effectLevelValue.value = values[handle];
 
   if (currentEffect !== 'none') {
-    imgUploadPreviewImg.style.filter = `${effectsMap[currentEffect].filter}(${effectLevelValue.value}${effectsMap[currentEffect].unit})`;
+    imgUploadPreviewImg.style.filter = `${EffectsMap[currentEffect].filter}(${effectLevelValue.value}${EffectsMap[currentEffect].unit})`;
   }
 });

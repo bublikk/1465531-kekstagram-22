@@ -1,9 +1,9 @@
-import {modalCloseElement} from './photo-editor.js';
+import {closeBigPicture} from './photo-editor.js';
 
 const main = document.querySelector('main');
 const ALERT_SHOW_TIME = 5000;
 
-const onFail = function (textError) {
+const showFatalError = (textError) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
@@ -25,8 +25,9 @@ const onFail = function (textError) {
 };
 
 // Удаляет элемент с документа (закрывает окошко сообщений)
-const removeElement = function () {
+const closeMessage = () => {
   let deletedElement = document.querySelector('.success');
+
   if (deletedElement === null){
     deletedElement = document.querySelector('.error');
   }
@@ -34,37 +35,34 @@ const removeElement = function () {
   document.removeEventListener('keydown', keydownListenerMessage);
 };
 
-const keydownListenerMessage = function (evt) {
+const keydownListenerMessage = (evt) => {
   if (evt.key === 'Escape') {
-    removeElement();
+    closeMessage();
   }
-}
+};
 
 // Показывает окно успешной отправки
-let messageShow = function (messageType) {
-
+let showMessage = (messageType) => {
   const template = document.querySelector(`#${messageType}`).content;
   const section = template.querySelector(`.${messageType}`);
   const fragment = document.createDocumentFragment();
-
-  modalCloseElement(); // Закрываем форму
+  closeBigPicture(); // Закрываем форму
 
   const element = section.cloneNode(true);
   fragment.appendChild(element); // Добавляем элементы в наш фрагмент
   main.appendChild(fragment);
 
-  element.addEventListener('click', function (e) {
-    if (e.target.closest(`.${messageType}__inner`) === null) {
-      removeElement();
+  element.addEventListener('click', (evt) => {
+    if (evt.target.closest(`.${messageType}__inner`) === null) {
+      closeMessage();
     }
   });
 
-  document.querySelector(`.${messageType}__button`).addEventListener('click', function () {
-    removeElement();
+  document.querySelector(`.${messageType}__button`).addEventListener('click', () => {
+    closeMessage();
   });
 
   document.addEventListener('keydown', keydownListenerMessage);
-
 };
 
-export {onFail, messageShow};
+export {showFatalError, showMessage};

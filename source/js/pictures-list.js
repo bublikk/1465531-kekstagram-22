@@ -6,30 +6,26 @@ const template = templateFragment.querySelector('a'); // В фрагменте �
 const fragment = document.createDocumentFragment(); // Создаем коробочку для хранения сгенерированных элементов
 
 // Создаем функцию, которая будет отрисовывать данные с сервера
-const renderSmallPhotos = function (picturesList) {
-
+const renderSmallPicture = (picturesList) => {
   // Перед отрисовкой удаляем детей
   const images = document.querySelectorAll('.pictures a');
   for (let i = 0; i < images.length; i++) {
     images[i].remove();
   }
 
-  // Задание #1
-  picturesList.forEach(function (pictureItem) { // Обходим массив pictureList (итератор pictureItem)
+  picturesList.forEach((pictureItem) => { // Обходим массив pictureList (итератор pictureItem)
     const element = template.cloneNode(true); // Клонируем шаблон (создаем элемент)
     element.querySelector('.picture__img').src = pictureItem.url; // Находим в этом элементе img и прописываем в его свойство "src" значение равное значению из элемента нашего массива pictureList
     element.querySelector('.picture__likes').textContent = pictureItem.likes;
     element.querySelector('.picture__comments').textContent = pictureItem.comments.length;
     fragment.appendChild(element); // Добавляем элементы в наш фрагмент
 
-    // Задание #2
-    element.addEventListener('click', function () {
+    element.addEventListener('click', () => {
       getBigPicture(pictureItem);
     })
   });
 
   pictures.appendChild(fragment); // Добавляем наш фрагмент в блок .pictures
+};
 
-}
-
-export {renderSmallPhotos};
+export {renderSmallPicture};

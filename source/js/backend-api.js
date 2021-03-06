@@ -1,7 +1,7 @@
 /* global _:readonly */
 import {setFilter, filter} from './filter.js';
-import {renderSmallPhotos} from './pictures-list.js';
-import {onFail, messageShow} from './message.js';
+import {renderSmallPicture} from './pictures-list.js';
+import {showFatalError, showMessage} from './message.js';
 
 const imgFilters = document.querySelector('.img-filters');
 const RERENDER_DELAY = 500;
@@ -11,14 +11,14 @@ fetch('https://22.javascript.pages.academy/kekstagram/data')
   .then((response) => response.json())
   .then((pictures) => {
     imgFilters.classList.remove('img-filters--inactive');
-    renderSmallPhotos(pictures);
+    renderSmallPicture(pictures);
     setFilter(_.debounce(
       (evt) => filter(evt, pictures),
       RERENDER_DELAY,
     ));
   })
   .catch(() => {
-    onFail('Не удалось получить данные с сервера. Попробуйте позже');
+    showFatalError('Не удалось получить данные с сервера. Попробуйте позже');
   });
 
 // Отправка данных на сервер
@@ -31,14 +31,10 @@ const sendData = (formData) => {
     },
   )
     .then((response) => {
-      if (response.ok) {
-        messageShow('success');
-      } else {
-        messageShow('error');
-      }
+      response.ok ? showMessage('success') : showMessage('error')
     })
     .catch(() => {
-      messageShow('error');
+      showMessage('error');
     });
 };
 

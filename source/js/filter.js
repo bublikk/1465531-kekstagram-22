@@ -1,48 +1,48 @@
 import {getRandomIntInclusive} from './util.js';
-import {renderSmallPhotos} from './pictures-list.js';
+import {renderSmallPicture} from './pictures-list.js';
 
 const formFilters = document.querySelector('.img-filters__form');
+const RANDOM_PHOTOS_COUNT = 10;
 
 // Отрисовывем Обсуждаемые
-const sortedByCommentsCount = (array) => {
-  let sortedArray = array.slice();
-  return sortedArray.sort(function (a, b) {
+const getSortedPhotos = (defaultArrayPhotos) => {
+  let sortedArrayPhotos = defaultArrayPhotos.slice();
+  return sortedArrayPhotos.sort((a, b) => {
     return b.comments.length - a.comments.length;
   });
-}
+};
 
 // Генерируем 10 случайных, не повторяющихся фотографий
-const getRandomElements = (array, count) => {
-  let randomArray = [];
+const getRandomPhotos = (defaultArrayPhotos, count) => {
+  let randomArrayPhotos = [];
   for (let i = 0; i < count; i++) {
-    let element = array[getRandomIntInclusive(0, array.length -1)];
-    while (randomArray.indexOf(element) !== -1) { // пока переменная element не найдена в массиве randomArray цикл генерирует новое число
-      element = array[getRandomIntInclusive(0, array.length -1)];
+    let element = defaultArrayPhotos[getRandomIntInclusive(0, defaultArrayPhotos.length -1)];
+    while (randomArrayPhotos.indexOf(element) !== -1) { // пока переменная element не найдена в массиве randomArray цикл генерирует новое число
+      element = defaultArrayPhotos[getRandomIntInclusive(0, defaultArrayPhotos.length -1)];
     }
-    randomArray.push(element);
+    randomArrayPhotos.push(element);
   }
-  return randomArray;
-}
+  return randomArrayPhotos;
+};
 
-const filter = function (evt, defaultArray) {
+const filter = (evt, defaultArrayPhotos) => {
   // Переключение фильтров
   for (let i = 0; i < formFilters.children.length; i++) {
     formFilters.children[i].classList.remove('img-filters__button--active');
   }
   evt.target.classList.add('img-filters__button--active');
-
   // Обработка фильтров
   if (evt.target.id === 'filter-discussed'){
     // Отрисовываем обсуждаемый массив
-    renderSmallPhotos(sortedByCommentsCount(defaultArray));
+    renderSmallPicture(getSortedPhotos(defaultArrayPhotos));
   } else if (evt.target.id === 'filter-random'){
     // Отрисовываем случайный массив
-    renderSmallPhotos(getRandomElements(defaultArray, 10));
+    renderSmallPicture(getRandomPhotos(defaultArrayPhotos, RANDOM_PHOTOS_COUNT));
   } else {
     // Отрисовывем стандартный массив
-    renderSmallPhotos(defaultArray);
+    renderSmallPicture(defaultArrayPhotos);
   }
-}
+};
 
 const setFilter = (cb) => {
   formFilters.addEventListener('click', (evt) => {

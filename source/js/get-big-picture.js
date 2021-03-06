@@ -1,19 +1,15 @@
 import {cutComments} from './comment.js';
 
-// Задание #2
 const COMMENT_IMG_SIZE = 35;
-const bigPicture = document.querySelector('.big-picture'); // Получем элемент большого фото
-const userModalCloseElement = bigPicture.querySelector('.big-picture__cancel');
+const bigPicture = document.querySelector('.big-picture');
+const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
 
-function getBigPicture(pictureItem) { // Функция ждет созданным нами (cloneNode) новый элемент И данные фото которые мы сгенерировали в get-photo-data
-  // Что должно происходить при наступлении события "клик"
-
-  document.addEventListener('keydown', bigPictureCloseLiestner);
-
-  bigPicture.classList.remove('hidden'); // Показываем большое фото
+const getBigPicture = (pictureItem) => {
+  document.addEventListener('keydown', closeBigPictureListener);
+  bigPicture.classList.remove('hidden');
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
   body.classList.add('modal-open');
@@ -57,20 +53,20 @@ function getBigPicture(pictureItem) { // Функция ждет созданн�
 
     cutComments();
   }
-}
+};
 
 // Реализация закрытия полноразмерного фото
-userModalCloseElement.addEventListener('click', function () {
+bigPictureCancel.addEventListener('click', () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.removeEventListener('keydown', bigPictureCloseLiestner);
+  document.removeEventListener('keydown', closeBigPictureListener);
 });
 
-const bigPictureCloseLiestner = function(evt) {
+const closeBigPictureListener = (evt) => {
   if (evt.key === 'Escape') {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
-    document.removeEventListener('keydown', bigPictureCloseLiestner);
+    document.removeEventListener('keydown', closeBigPictureListener);
   }
 };
 

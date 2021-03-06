@@ -1,8 +1,11 @@
 const hashtagInput = document.querySelector('.text__hashtags');
+const HASHTAG_LENGTH_MIN = 2;
+const HASHTAG_LENGTH_MAX = 20;
+const HASHTAG_COUNT_LIMIT = 5;
+const HASHTAG_UNIQUE_LIMIT = 1;
 
 // Валидация хеш-тегов
-hashtagInput.addEventListener('input', function () {
-
+hashtagInput.addEventListener('input', () => {
   hashtagInput.setCustomValidity('');
 
   // trim убирает пробелы по краям строки, split рубит строку на коллецию по указанному разделителю
@@ -18,24 +21,23 @@ hashtagInput.addEventListener('input', function () {
     hashtags[i] = hashtags[i].toLowerCase();
   }
 
-  if (hashtags.length > 5) {
+  if (hashtags.length > HASHTAG_COUNT_LIMIT) {
     hashtagInput.setCustomValidity ('Нельзя указать больше пяти хэш-тегов');
   } else {
     for (let hashtag of hashtags) {
-      if (hashtag.length < 2) {
+      if (hashtag.length < HASHTAG_LENGTH_MIN) {
         hashtagInput.setCustomValidity ('Имя должно состоять минимум из 2-х символов');
-      } else if (hashtag.length > 20) {
+      } else if (hashtag.length > HASHTAG_LENGTH_MAX) {
         hashtagInput.setCustomValidity ('Имя не должно превышать 20-ти символов');
       } else if (hashtag[0] !== '#') {
         hashtagInput.setCustomValidity ('Хеш-тег начинается с "#"');
       } else if (hashtag.substring(1).match('^[а-яa-z0-9]+$') === null){
         hashtagInput.setCustomValidity ('Не может содержать пробелы, спецсимволы');
-      } else if (hashtags.filter(function(x){return x === hashtag}).length > 1) {
+      } else if (hashtags.filter((x) => {return x === hashtag}).length > HASHTAG_UNIQUE_LIMIT) {
         hashtagInput.setCustomValidity ('Нельзя использовать одинаковые хэш-теги');
       }
     }
   }
 
   hashtagInput.reportValidity();
-
 });
