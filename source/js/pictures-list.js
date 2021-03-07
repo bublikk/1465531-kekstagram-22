@@ -10,6 +10,7 @@ const renderSmallPicture = (picturesList) => {
   // Перед отрисовкой удаляем детей
   const images = document.querySelectorAll('.pictures a');
   for (let i = 0; i < images.length; i++) {
+    images[i].removeEventListener('click', getBigPicture);
     images[i].remove();
   }
 

@@ -1,5 +1,6 @@
-const downloadButton = document.querySelector('.comments-loader');
 const COMMENT_LIMIT = 5;
+
+const downloadButton = document.querySelector('.comments-loader');
 
 const cutComments = () => {
   const comments = document.querySelectorAll('.social__comment');
@@ -17,7 +18,7 @@ const cutComments = () => {
 downloadButton.addEventListener('click', () => {
   const comments = document.querySelectorAll('.social__comment');
   let hiddenComments = [];
-  
+
   comments.forEach(element => {
     if (element.classList.contains('hidden')) {
       hiddenComments.push(element);

@@ -1,6 +1,7 @@
 import {cutComments} from './comment.js';
 
 const COMMENT_IMG_SIZE = 35;
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 const socialCommentCount = document.querySelector('.social__comment-count');

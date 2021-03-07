@@ -1,7 +1,8 @@
 import {closeBigPicture} from './photo-editor.js';
 
-const main = document.querySelector('main');
 const ALERT_SHOW_TIME = 5000;
+
+const main = document.querySelector('main');
 
 const showFatalError = (textError) => {
   const alertContainer = document.createElement('div');
@@ -25,12 +26,16 @@ const showFatalError = (textError) => {
 };
 
 // Удаляет элемент с документа (закрывает окошко сообщений)
-const closeMessage = () => {
-  let deletedElement = document.querySelector('.success');
-
-  if (deletedElement === null){
-    deletedElement = document.querySelector('.error');
+const closeMessage = (evt) => {
+  const deletedElementName = document.querySelector('.success') === null ? '.error' : '.success';
+  if (evt !== undefined) {
+    if (evt.target.className.includes('__inner') || evt.target.className.includes('__title')) {
+      return;
+    }
   }
+  document.querySelector(`${deletedElementName}__button`).removeEventListener('click', closeMessage);
+  const deletedElement = document.querySelector(`${deletedElementName}`);
+  deletedElement.removeEventListener('click', closeMessage);
   deletedElement.remove();
   document.removeEventListener('keydown', keydownListenerMessage);
 };
@@ -41,7 +46,7 @@ const keydownListenerMessage = (evt) => {
   }
 };
 
-// Показывает окно успешной отправки
+// Показывает окно отправки (успешной и не успешной)
 let showMessage = (messageType) => {
   const template = document.querySelector(`#${messageType}`).content;
   const section = template.querySelector(`.${messageType}`);
@@ -49,19 +54,12 @@ let showMessage = (messageType) => {
   closeBigPicture(); // Закрываем форму
 
   const element = section.cloneNode(true);
-  fragment.appendChild(element); // Добавляем элементы в наш фрагмент
+  fragment.appendChild(element);
+  element.addEventListener('click', closeMessage);
+
   main.appendChild(fragment);
 
-  element.addEventListener('click', (evt) => {
-    if (evt.target.closest(`.${messageType}__inner`) === null) {
-      closeMessage();
-    }
-  });
-
-  document.querySelector(`.${messageType}__button`).addEventListener('click', () => {
-    closeMessage();
-  });
-
+  document.querySelector(`.${messageType}__button`).addEventListener('click', closeMessage);
   document.addEventListener('keydown', keydownListenerMessage);
 };
 

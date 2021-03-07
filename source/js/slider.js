@@ -1,15 +1,17 @@
 import noUiSlider from 'nouislider';
 import 'nouislider/distribute/nouislider.css';
 
+const INITIAL_FILTER_VALUE = 100;
+
 const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
 const effectsMapRadioButtons  = document.querySelectorAll('.effects__radio');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
-const INITIAL_FILTER_VALUE = 100;
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
+
 let currentEffect = 'none';
 
-const EffectsMap = {
+const effectsMap = {
   chrome: {
     range: {
       min: 0,
@@ -83,11 +85,11 @@ for (let effectRadioButton of effectsMapRadioButtons) {
       imgUploadEffectLevel.classList.remove('hidden');
       effectLevelSlider.noUiSlider.updateOptions({
         range: {
-          min: EffectsMap[currentEffect].range.min,
-          max: EffectsMap[currentEffect].range.max,
+          min: effectsMap[currentEffect].range.min,
+          max: effectsMap[currentEffect].range.max,
         },
-        step: EffectsMap[currentEffect].step,
-        start: EffectsMap[currentEffect].start,
+        step: effectsMap[currentEffect].step,
+        start: effectsMap[currentEffect].start,
       });
     }
   });
@@ -119,6 +121,6 @@ effectLevelSlider.noUiSlider.on('update', (values, handle) => {
   effectLevelValue.value = values[handle];
 
   if (currentEffect !== 'none') {
-    imgUploadPreviewImg.style.filter = `${EffectsMap[currentEffect].filter}(${effectLevelValue.value}${EffectsMap[currentEffect].unit})`;
+    imgUploadPreviewImg.style.filter = `${effectsMap[currentEffect].filter}(${effectLevelValue.value}${effectsMap[currentEffect].unit})`;
   }
 });

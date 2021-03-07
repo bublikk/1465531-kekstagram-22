@@ -1,8 +1,9 @@
-const hashtagInput = document.querySelector('.text__hashtags');
 const HASHTAG_LENGTH_MIN = 2;
 const HASHTAG_LENGTH_MAX = 20;
 const HASHTAG_COUNT_LIMIT = 5;
 const HASHTAG_UNIQUE_LIMIT = 1;
+
+const hashtagInput = document.querySelector('.text__hashtags');
 
 // Валидация хеш-тегов
 hashtagInput.addEventListener('input', () => {

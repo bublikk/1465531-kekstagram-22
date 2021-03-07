@@ -1,6 +1,10 @@
 import {sendData} from './backend-api.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const SCALE_STEP = 25;
+const INITIAL_SCALE_MIN = 25;
+const INITIAL_SCALE_MAX = 100;
+
 const uploadFile = document.querySelector('.img-upload__start input[type=file]');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
@@ -11,14 +15,12 @@ const imgUploadPreview = document.querySelector('.img-upload__preview');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
-let initialScale;
-const SCALE_STEP = 25;
-const INITIAL_SCALE_MIN = 25;
-const INITIAL_SCALE_MAX = 100;
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
 const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
 const hashtagInput = document.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
+
+let initialScale;
 
 const keydownListener = (evt) => {
   if (evt.key === 'Escape') {

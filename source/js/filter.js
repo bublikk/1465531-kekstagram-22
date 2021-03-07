@@ -1,8 +1,9 @@
 import {getRandomIntInclusive} from './util.js';
 import {renderSmallPicture} from './pictures-list.js';
 
-const formFilters = document.querySelector('.img-filters__form');
 const RANDOM_PHOTOS_COUNT = 10;
+
+const formFilters = document.querySelector('.img-filters__form');
 
 // Отрисовывем Обсуждаемые
 const getSortedPhotos = (defaultArrayPhotos) => {
@@ -16,9 +17,9 @@ const getSortedPhotos = (defaultArrayPhotos) => {
 const getRandomPhotos = (defaultArrayPhotos, count) => {
   let randomArrayPhotos = [];
   for (let i = 0; i < count; i++) {
-    let element = defaultArrayPhotos[getRandomIntInclusive(0, defaultArrayPhotos.length -1)];
+    let element = defaultArrayPhotos[getRandomIntInclusive(0, defaultArrayPhotos.length - 1)];
     while (randomArrayPhotos.indexOf(element) !== -1) { // пока переменная element не найдена в массиве randomArray цикл генерирует новое число
-      element = defaultArrayPhotos[getRandomIntInclusive(0, defaultArrayPhotos.length -1)];
+      element = defaultArrayPhotos[getRandomIntInclusive(0, defaultArrayPhotos.length - 1)];
     }
     randomArrayPhotos.push(element);
   }

@@ -3,8 +3,9 @@ import {setFilter, filter} from './filter.js';
 import {renderSmallPicture} from './pictures-list.js';
 import {showFatalError, showMessage} from './message.js';
 
-const imgFilters = document.querySelector('.img-filters');
 const RERENDER_DELAY = 500;
+
+const imgFilters = document.querySelector('.img-filters');
 
 // Получение данных с сервера и их отрисовка
 fetch('https://22.javascript.pages.academy/kekstagram/data')
